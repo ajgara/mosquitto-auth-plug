@@ -33,7 +33,7 @@
 #include <openssl/evp.h>
 #include "base64.h"
 
-#define KEY_LENGTH      24
+#define KEY_LENGTH      32
 #define SEPARATOR       "$"
 #define TRUE	(1)
 #define FALSE	(0)
@@ -51,9 +51,9 @@ static int detoken(char *pbkstr, char **sha, int *iter, char **salt, char **key)
 
 	save = s = strdup(pbkstr);
 
-	if ((p = strsep(&s, SEPARATOR)) == NULL)
+	if ((p = strsep(&s, "_")) == NULL)
 		goto out;
-	if (strcmp(p, "PBKDF2") != 0)
+	if (strcmp(p, "pbkdf2") != 0)
 		goto out;
 
 	if ((p = strsep(&s, SEPARATOR)) == NULL)
@@ -143,8 +143,8 @@ int main()
 {
         // char password[] = "hello";
 	// char PB1[] = "PBKDF2$sha256$10000$eytf9sEo8EprP9P3$2eO6tROHiqI3bm+gg+vpmWooWMpz1zji";
-        char password[] = "supersecret";
-	char PB1[] = "PBKDF2$sha256$10000$YEbSTt8FaMRDq/ib$Kt97+sMCYg00mqMOBAYinqZlnxX8HqHk";
+        char password[] = "admin";
+	char PB1[] = "pbkdf2_sha256$15000$WURM4JdHSKbV$mSBhinW5UBpZSRbhU2ZYI7bgmWT+GOCGFe9kIXvM9Ps=";
 	// char PB1[] = "PBKDF2$sha1$10000$XWfyPLeC9gsD6SbI$HOnjU4Ux7RpeBHdqYxpIGH1R5qCCtNA1";
 	// char PB1[] = "PBKDF2$sha512$10000$v/aaCgBZ+VZN5L8n$BpgjSTyb4weVxr9cA2mvQ+jaCyaAPeYe";
 	int match;
